@@ -1,0 +1,40 @@
+{
+  "name": "Nano Donate",
+  "version": "1.0.0",
+  "description": "Make Nano donations to your favorite websites.",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["getNanoMetaTag.js"],
+      "run_at": "document_idle"
+    }
+  ],  
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/nano-donate-inactive-128.png",
+      "32": "images/nano-donate-inactive-128.png",
+      "48": "images/nano-donate-inactive-128.png",
+      "128": "images/nano-donate-inactive-128.png"
+    }    
+  },
+  "icons": {
+    "16": "images/nano-donate-active-128.png",
+    "32": "images/nano-donate-active-128.png",
+    "48": "images/nano-donate-active-128.png",
+    "128": "images/nano-donate-active-128.png"
+  },
+  "content_security_policy": "script-src 'self' https://brainblocks.io/brainblocks.min.js; object-src 'self'",
+  "manifest_version": 2
+}

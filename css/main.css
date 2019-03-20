@@ -1,0 +1,146 @@
+body {
+  background-color: #EEE;
+  color: #000;
+  font-family: "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;                
+  font-size: 15px;        
+}
+
+a, a:visited {
+  color: #4A90E2;
+}
+
+#wrapper {
+  border-radius: 5px;
+}
+
+button {
+  outline: none;
+}
+
+#page-donation, #page-nodonate, #page-brainblocks, #page-donation-successful, #page-donation-unsuccessful, #page-history {
+  display: none;
+  min-width: 400px;
+  background-color: #FFF;
+  padding: 0.5rem;
+  padding-bottom: 2rem;
+}
+
+input {
+  font-family: "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;                
+  padding: 0.2rem;
+  font-size: 1rem;
+}
+
+#nano-donation-amount {
+  width: 10rem;
+}
+
+#nano-donation-submit {
+  cursor: pointer;
+}
+
+#suggestions-wrapper {
+  width: 100%;        
+  margin: 1rem;
+}
+
+.suggestion {
+  display: inline-block;
+  background-color: #4a90e2;
+  color: #FFF;
+  min-width: 5rem;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0.3rem 0;
+}
+
+#address-wrapper {
+  margin: 1rem 0;
+}
+
+#website-wrapper {
+  margin: 0.5rem 0;
+}
+
+#website {
+  color: #666;
+}
+
+#address {
+  font-weight: bold;
+}      
+
+#nano-amount-error {
+  color: red;
+}
+
+h4 {
+  margin: 0.2rem;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  margin: 0.2rem 0;
+}
+
+header #title {
+  margin-left: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+h3 {
+  padding: 0;
+  margin: 0.4rem 0 0.2rem 0;
+}     
+
+footer {
+  background-color: #666;
+  color: #FFF;
+  padding: 0.3rem;
+  font-size: 0.8rem;
+}
+
+footer a, footer a:visited {
+  color: #FFF;
+}             
+
+#nano-donation-form {
+  background-color: #EEE;
+  margin: 1rem 0;
+  padding: 1rem 0.5rem;
+  
+}
+
+#nano-donation-amount-success {
+  font-weight: bold;
+}
+
+#history-link {
+  margin-left: auto;
+  color: #666;        
+}      
+
+#history-link, #history-link-donation-successful {
+  cursor: pointer;
+}      
+
+#donation-history-item {        
+  font-size: 0.8rem;
+  margin: 0.7rem 0 2rem 0;
+  border: 1px solid #CCC;
+}
+
+#donation-history-item tr td:first-child {
+  font-weight: bold;
+  white-space: nowrap;
+  background-color: #BBB;
+}
+
+#donation-history-item td {
+  padding: 0.2rem;
+}
