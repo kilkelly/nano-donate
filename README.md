@@ -6,6 +6,6 @@ Read more about [Nano Donate](https://nanocharts.info/nano-donate.html).
 
 ![Nano Donate](https://nanocharts.info/images/nano-donate/nano-donate-screenshot.png "Nano Donate in action")
 
-#### License
+### License
 
 MIT
