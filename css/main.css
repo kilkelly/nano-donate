@@ -17,9 +17,9 @@ button {
   outline: none;
 }
 
-#page-donation, #page-nodonate, #page-brainblocks, #page-donation-successful, #page-donation-unsuccessful, #page-history {
+#page-donation, #page-nodonate, #page-brainblocks, #page-donation-successful, #page-donation-unsuccessful, #page-history, #page-first-use {
   display: none;
-  min-width: 400px;
+  min-width: 450px;
   background-color: #FFF;
   padding: 0.5rem;
   padding-bottom: 2rem;
