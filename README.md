@@ -8,4 +8,4 @@ Read more about [Nano Donate](https://nanocharts.info/nano-donate.html).
 
 ### License
 
-MIT
+GNU GPLv3
