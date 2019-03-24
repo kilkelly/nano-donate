@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "description": "Make Nano donations to your favorite websites.",
   "permissions": [
-    "activeTab",
-    "tabs",
     "storage"
   ],
   "content_scripts": [
