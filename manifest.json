@@ -1,15 +1,16 @@
 {
   "name": "Nano Donate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Make Nano donations to your favorite websites.",
   "permissions": [
-    "activeTab",
-    "tabs",
     "storage"
   ],
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
       "js": ["getNanoMetaTag.js"],
       "run_at": "document_idle"
     }

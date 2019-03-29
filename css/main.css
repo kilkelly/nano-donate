@@ -2,7 +2,8 @@ body {
   background-color: #EEE;
   color: #000;
   font-family: "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;                
-  font-size: 15px;        
+  font-size: 15px;
+  min-width: 500px;
 }
 
 a, a:visited {
@@ -18,8 +19,7 @@ button {
 }
 
 #page-donation, #page-nodonate, #page-brainblocks, #page-donation-successful, #page-donation-unsuccessful, #page-history, #page-first-use {
-  display: none;
-  min-width: 450px;
+  display: none;  
   background-color: #FFF;
   padding: 0.5rem;
   padding-bottom: 2rem;
