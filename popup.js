@@ -1,3 +1,4 @@
+var version = 'v1.0.2'
 var pageDonation = 'page-donation'
 var pageNoDonate = 'page-nodonate'
 var pageBrainblocks = 'page-brainblocks'
@@ -75,8 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function onNanoDonationFormSubmit (event) {
           event.preventDefault()
-          var nanoDonationAmountElementValue = nanoDonationAmountElement.value * 1
-          var nanoDonationAmount = nanoDonationAmountElementValue * raiMultiplier
+          var nanoDonationAmountElementValue = parseFloat(nanoDonationAmountElement.value)
+          var nanoDonationAmount = parseFloat((nanoDonationAmountElementValue * raiMultiplier).toFixed(0))
           var token
 
           if (amountValid) {
@@ -305,10 +306,10 @@ document.addEventListener('DOMContentLoaded', function () {
       // (to prevent clicking away during the donation process)
       if (footerActive) {
         footerLinkNanocharts.innerHTML = '<a href="https://nanocharts.info/" target="_blank">Nano Charts</a>'
-        footerLinkNanoDonate.innerHTML = '<a href="https://nanocharts.info/nano-donate.html" target="_blank">Nano Donate</a>'
+        footerLinkNanoDonate.innerHTML = '<a href="https://nanocharts.info/nano-donate.html" target="_blank">Nano Donate (' + version + ')</a>'
       } else {
         footerLinkNanocharts.innerHTML = 'Nano Charts'
-        footerLinkNanoDonate.innerHTML = 'Nano Donate'
+        footerLinkNanoDonate.innerHTML = 'Nano Donate (' + version + ')'
       }
 
       // Check whether to activate the link to Donation History in the header
