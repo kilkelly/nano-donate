@@ -1,7 +1,9 @@
 var version = 'v1.0.2'
 var pageDonation = 'page-donation'
 var pageNoDonate = 'page-nodonate'
+var pagePaymentChoice = 'page-payment-choice'
 var pageBrainblocks = 'page-brainblocks'
+var pageQRCode = 'page-qr-code'
 var pageHistory = 'page-history'
 var pageDonationSuccessful = 'page-donation-successful'
 var pageDonationUnsuccessful = 'page-donation-unsuccessful'
@@ -27,6 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var historyLinkDonationSuccessfulElement = $('history-link-donation-successful')
   var donationsHistoryElement = $('donations-history')
   var donationSuccessfulDetailsElement = $('donation-successful-details')
+  var brainblocksButton = $('brainblocks-button')
+  var paymentChoiceAmount = $('payment-choice-amount')
   var suggestionElements = document.getElementsByClassName('suggestion')
 
   chrome.storage.local.get({nanoAddressCache: {}}, function ({ nanoAddressCache }) {    
@@ -66,6 +70,23 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         historyLinkElement.onclick = historyLinkDonationSuccessfulElement.onclick = onHistoryLinkClicked
         backLinkElement.onclick = onBackLinkClicked
+        $('payment-choice-brainblocks').onclick = function () {
+          showPage(pageBrainblocks, {
+            footerActive: false,
+            historyActive: false,
+            githubActive: false,
+            backActive: true
+          })
+        }
+        $('payment-choice-qr-code').onclick = function () {
+          showPage(pageQRCode, {
+            footerActive: false,
+            historyActive: false,
+            githubActive: false,
+            backActive: true
+          }, 'Start New Donation')
+        }
+
 
         // Check if web page is enabled to accept Nano donations (if Nano address exists in meta tag)
         if (nanoAddress) {
@@ -92,7 +113,16 @@ document.addEventListener('DOMContentLoaded', function () {
           var token
 
           if (amountValid) {
-            showPage(pageBrainblocks, {
+            paymentChoiceAmount.innerText = nanoDonationAmountElementValue
+
+/*             showPage(pageBrainblocks, {
+              footerActive: false,
+              historyActive: false,
+              githubActive: false,
+              backActive: true
+            }) */
+
+            showPage(pagePaymentChoice, {
               footerActive: false,
               historyActive: false,
               githubActive: false,
@@ -170,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
                       </table>
                     `
 
-                    showPage(pageDonationSuccessful, {}, 'Donate again?')
+                    showPage(pageDonationSuccessful, {}, 'Start New Donation')
 
                     // Save donation to local storage, along with previous donations
                     chrome.storage.local.get({history: []}, function ({ history }) {
@@ -185,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   console.log(error)
                 })
               }
-            }, '#nano-button')
+            }, '#brainblocks-button')
           }
         }
 
@@ -257,8 +287,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function onBackLinkClicked (event) {
           if (nanoAddress) {
-            $('nano-donation-amount').value = null
-            $('nano-button').innerHTML = ''
+            nanoDonationAmountElement.value = null
+            brainblocksButton.innerHTML = ''
             showPage(pageDonation, { backActive: false })
           } else {
             showPage(pageNoDonate, { backActive: false })
@@ -313,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
             donationsHistoryHtml = donationsHistoryHtml || '<p>You have not made any donations yet.</p>'
 
             donationsHistoryElement.innerHTML = donationsHistoryHtml
-            showPage(pageHistory, { historyActive: false }, 'Donate Now')
+            showPage(pageHistory, { historyActive: false }, 'Back')
           })
         }
       })
@@ -332,7 +362,9 @@ document.addEventListener('DOMContentLoaded', function () {
       githubActive: true,
       backActive: true
     }, backLinkText = 'Cancel') {
+      $(pagePaymentChoice).style.display = 'none'
       $(pageBrainblocks).style.display = 'none'
+      $(pageQRCode).style.display = 'none'
       $(pageNoDonate).style.display = 'none'
       $(pageDonation).style.display = 'none'
       $(pageHistory).style.display = 'none'
