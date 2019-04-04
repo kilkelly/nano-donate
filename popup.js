@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var footerLinkNanocharts = $('footer-link-nanocharts')
   var footerLinkNanoDonate = $('footer-link-nano-donate')
   var footerLinkGithub = $('footer-link-github')
+  var backLinkElement = $('back-link')
   var historyLinkElement = $('history-link')
   var historyLinkDonationSuccessfulElement = $('history-link-donation-successful')
   var donationsHistoryElement = $('donations-history')
@@ -33,7 +34,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Check whether user has agreed to first use message
     chrome.storage.local.get({agree: false}, function ({ agree }) {
       if (!agree) {
-        showPage(pageFirstUse, true, false)
+        showPage(pageFirstUse, {
+          historyActive: false,
+          backActive: false
+        })
         $('i-agree').onclick = function () {
           chrome.storage.local.set({agree: true})
           main()
@@ -61,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
           suggestionElement.onclick = onSuggestionClicked
         })
         historyLinkElement.onclick = historyLinkDonationSuccessfulElement.onclick = onHistoryLinkClicked
+        backLinkElement.onclick = onBackLinkClicked
 
         // Check if web page is enabled to accept Nano donations (if Nano address exists in meta tag)
         if (nanoAddress) {
@@ -73,9 +78,9 @@ document.addEventListener('DOMContentLoaded', function () {
             correctLevel: QRCode.CorrectLevel.M
           })
           nanoDonationFormElement.onsubmit = onNanoDonationFormSubmit
-          showPage(pageDonation)
+          showPage(pageDonation, { backActive: false })
         } else {
-          showPage(pageNoDonate)
+          showPage(pageNoDonate, { backActive: false })
         }
 
         // -----
@@ -87,7 +92,12 @@ document.addEventListener('DOMContentLoaded', function () {
           var token
 
           if (amountValid) {
-            showPage(pageBrainblocks, false, false, false)
+            showPage(pageBrainblocks, {
+              footerActive: false,
+              historyActive: false,
+              githubActive: false,
+              backActive: true
+            })
 
             // Render the Nano button
             brainblocks.Button.render({
@@ -160,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
                       </table>
                     `
 
-                    showPage(pageDonationSuccessful)
+                    showPage(pageDonationSuccessful, {}, 'Donate again?')
 
                     // Save donation to local storage, along with previous donations
                     chrome.storage.local.get({history: []}, function ({ history }) {
@@ -245,6 +255,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // -----
 
+        function onBackLinkClicked (event) {
+          if (nanoAddress) {
+            $('nano-donation-amount').value = null
+            $('nano-button').innerHTML = ''
+            showPage(pageDonation, { backActive: false })
+          } else {
+            showPage(pageNoDonate, { backActive: false })
+          }
+        }
+
+        // -----
+
         // Donation history
         function onHistoryLinkClicked (event) {
           var donationsHistoryHtml = ''
@@ -291,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function () {
             donationsHistoryHtml = donationsHistoryHtml || '<p>You have not made any donations yet.</p>'
 
             donationsHistoryElement.innerHTML = donationsHistoryHtml
-            showPage(pageHistory)
+            showPage(pageHistory, { historyActive: false }, 'Donate Now')
           })
         }
       })
@@ -299,7 +321,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // -----
 
-    function showPage (page, footerActive = true, historyActive = true, githubActive = true) {
+    function showPage (page, {
+      footerActive = true,
+      historyActive = true,
+      githubActive = true,
+      backActive = true
+    } = {
+      footerActive: true,
+      historyActive: true,
+      githubActive: true,
+      backActive: true
+    }, backLinkText = 'Cancel') {
       $(pageBrainblocks).style.display = 'none'
       $(pageNoDonate).style.display = 'none'
       $(pageDonation).style.display = 'none'
@@ -308,6 +340,9 @@ document.addEventListener('DOMContentLoaded', function () {
       $(pageDonationUnsuccessful).style.display = 'none'
       $(pageFirstUse).style.display = 'none'
       $(page).style.display = 'block'
+
+      // Set the centextual text for the back link
+      backLinkElement.innerText = backLinkText
 
       // Check whether to activate the links in the footer
       // (to prevent clicking away during the donation process)
@@ -325,6 +360,13 @@ document.addEventListener('DOMContentLoaded', function () {
         historyLinkElement.style.display = 'block'
       } else {
         historyLinkElement.style.display = 'none'
+      }
+
+      // Check whether to activate the Back link in the header
+      if (backActive) {
+        backLinkElement.style.display = 'block'
+      } else {
+        backLinkElement.style.display = 'none'
       }
 
       // Check whether to activate the link to GitHub in the footer

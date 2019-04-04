@@ -88,7 +88,8 @@ header {
 }
 
 header #title {
-  margin-left: 5px;
+  margin-right: auto;
+  margin-left: 0.3rem;
   font-weight: bold;
   color: #333;
 }
@@ -120,14 +121,14 @@ footer a, footer a:visited {
   font-weight: bold;
 }
 
-#history-link {
-  margin-left: auto;
+#back-link, #history-link, #history-link-donation-successful {
   color: #666;        
-}      
-
-#history-link, #history-link-donation-successful {
   cursor: pointer;
-}      
+}
+
+#back-link, #history-link {
+  margin-left: 1.5rem;
+}
 
 #donation-history-item {        
   font-size: 0.8rem;
