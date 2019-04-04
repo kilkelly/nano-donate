@@ -66,6 +66,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (nanoAddress) {
           $('website').innerText = url
           setNanoAddress($('address'))
+          var addressQRCode = new QRCode($('address-qr-code'), {
+            text: nanoAddress,
+            width: 120,
+            height: 120,
+            correctLevel: QRCode.CorrectLevel.M
+          })
           nanoDonationFormElement.onsubmit = onNanoDonationFormSubmit
           showPage(pageDonation)
         } else {
@@ -219,7 +225,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Shorten long Nano address for display purposes
         function shortenNanoAddress (nanoAddress) {
-          return nanoAddress.substring(0, 10) + '...' + nanoAddress.substring(58, 64)
+          return nanoAddress
+          // return nanoAddress.substring(0, 10) + '...' + nanoAddress.substring(58, 64)
         }
 
         // -----
@@ -330,8 +337,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
   })
-
-  
 })
 
 // ---------------------------------------------------

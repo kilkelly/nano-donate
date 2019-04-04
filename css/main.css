@@ -144,3 +144,10 @@ footer a, footer a:visited {
 #donation-history-item td {
   padding: 0.2rem;
 }
+
+#address {
+  font-family: monospace;
+  word-wrap: break-word;
+  font-size: 88%;
+  width: 200px;
+}
