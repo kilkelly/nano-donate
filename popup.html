@@ -14,63 +14,75 @@
       <div id="history-link">Donation History</div>
     </header>    
     <div id="wrapper">
-      <div id="page-donation">
-        <h3>Donate to the current web page</h3>
+      <!----------------------------->
+      <div id="page-donation" class="page">
+        <h3>Donate to</h3>
         <div id="website-wrapper"><div id="website"></div></div>
         <form id="nano-donation-form">
           <span style="font-weight: bold;">⋰·⋰</span>
           <input id="nano-donation-amount" type="text" placeholder="Enter Nano amount" autocomplete="off" maxlength="9"/>
-          <input id="nano-donation-submit" type="submit" value="Next" disabled/>
+          <input id="nano-donation-submit" type="submit" value="Next >" disabled/>
           <div id="nano-amount-error"></div>
           <div id="suggestions-wrapper">
             <div class="suggestion" title="0.1">⋰·⋰ 0.1</div>
             <div class="suggestion" title="1">⋰·⋰ 1</div>
+            <div class="suggestion" title="5">⋰·⋰ 5</div>
             <div class="suggestion" title="10">⋰·⋰ 10</div>
           </div>
         </form>
-        <div id="address-wrapper">Donations will be sent to the following address provided by the website owner: <a id="address" href="#" target="_blank"></a></div>
+        <div id="address-wrapper">Donations will be sent to this address set by the website owner: <a id="address" href="#" target="_blank"></a></div>
         <div id="address-qr-code"></div>
       </div>
-      <div id="page-payment-choice">
+      <!----------------------------->
+      <div id="page-payment-choice" class="page">
         <h3>How would like to donate ⋰·⋰ <span id="payment-choice-amount"></span>?</h3>
         <div class="payment-choice">
-            <button id="payment-choice-brainblocks" class="payment-choice-button"/>Brainblocks Payment</button>
-            <p class="payment-choice-description">Donations are saved to your Donation History</p>
+            <button id="payment-choice-brainblocks" class="payment-choice-button"/>Brainblocks Payment ></button>
+            <p class="payment-choice-description">Donations are saved to your Donation History ></p>
         </div>
-        <div class="payment-choice">
-            <button id="payment-choice-qr-code" class="payment-choice-button"/>QR Code</button>
+        <div class="payment-choice" class="page">
+            <button id="payment-choice-qr-code" class="payment-choice-button"/>QR Code ></button>
             <p class="payment-choice-description">Donations are <span style="font-weight: bold;">not</span> saved to your Donation History</p>
         </div>
-      </div>      
-      <div id="page-brainblocks">
+      </div>
+      <!----------------------------->
+      <div id="page-brainblocks" class="page">
         <p>Be sure to review the donation amount below before clicking the button. <!-- Double-check <a id="address-on-brainblocks-page" href="#" target="_blank"></a> afterwards to see that your donation was sent. --> Do not close this popup until the donation has finished processing.</p>
         <div id="brainblocks-button"></div>
       </div>
-      <div id="page-qr-code">
+      <!----------------------------->
+      <div id="page-qr-code" class="page">
       </div>      
-      <div id="page-nodonate">
+      <!----------------------------->
+      <div id="page-nodonate" class="page">
           <p>This web page is not enabled for Nano donations through <span style="font-weight: bold;">Nano Donate</span>. If you are the owner of this web page please <a href="https://nanocharts.info/nano-donate.html" target="_blank">follow this link</a> to learn how to enable donations.</p>
           <p>If you are not the owner but still want to donate Nano try sending a kind email along with this <a href="https://nanocharts.info/nano-donate.html" target="_blank">link</a> to the website's owner through their contact page.</p>
       </div>
-      <div id="page-history">
+      <!----------------------------->
+      <div id="page-history" class="page">
           <h3>Donation History</h3>
           <div id="donations-history"></div>
       </div>      
-      <div id="page-donation-successful">
+      <!----------------------------->
+      <div id="page-donation-successful" class="page">
           <p>Your donation of <span id="nano-donation-amount-success"></span> has been sent successfully!</p>
           <p>Thank you for using <span style="font-weight: bold;">Nano Donate</span>.</p>
           <h4>Donation details</h4>  
           <div id="donation-successful-details"></div>
           <p>View your entire <a id="history-link-donation-successful" href="#">Donation History</a>.</p>
       </div>
-      <div id="page-donation-unsuccessful">
+      <!----------------------------->
+      <div id="page-donation-unsuccessful" class="page">
           <p>Payment unsuccessful.</p>
       </div>
-      <div id="page-first-use">
-          <h4>Welcome!</h4>  
+      <!----------------------------->
+      <div id="page-first-use" class="page">
+          <h3>Thanks for installing Nano Donate!</h3>  
+          <p><span style="font-weight: bold;">Nano Donate</span> is the easiest way to make Nano currency donations to participating websites.</p>
           <p>While every possible effort has been made to ensure <span style="font-weight: bold;">Nano Donate</span> works securely please make sure to double-check all outgoing amounts from your wallet when making a donation. Test with a tiny donation amount first if you want peace of mind. The author of this extension is not liable for any loss or damage arising directly through use of this extension.</p>
           <button id="i-agree">I Agree</button>
       </div>      
+      <!----------------------------->
     </div>
     <footer>
         <div><span id="footer-link-nano-donate"></span> is brought to you by <span id="footer-link-nanocharts"></span> <!--By using this extension you agree that the author is not liable for any loss or damage arising directly through use of this extension.--></div>
