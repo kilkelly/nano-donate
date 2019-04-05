@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
             historyActive: false,
             githubActive: false,
             backActive: true
-          }, 'Start New Donation')
+          }, 'Donate Again?')
         }
 
 
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
                       </table>
                     `
 
-                    showPage(pageDonationSuccessful, {}, 'Start New Donation')
+                    showPage(pageDonationSuccessful, {}, 'Donate Again?')
 
                     // Save donation to local storage, along with previous donations
                     chrome.storage.local.get({history: []}, function ({ history }) {
@@ -287,8 +287,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function onBackLinkClicked (event) {
           if (nanoAddress) {
-            nanoDonationAmountElement.value = null
+            nanoDonationAmountElement.value = ''
             brainblocksButton.innerHTML = ''
+            nextDisallow()
             showPage(pageDonation, { backActive: false })
           } else {
             showPage(pageNoDonate, { backActive: false })
@@ -361,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function () {
       historyActive: true,
       githubActive: true,
       backActive: true
-    }, backLinkText = 'Cancel') {
+    }, backLinkText = 'Start Over') {
       $(pagePaymentChoice).style.display = 'none'
       $(pageBrainblocks).style.display = 'none'
       $(pageQRCode).style.display = 'none'
@@ -374,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function () {
       $(page).style.display = 'block'
 
       // Set the centextual text for the back link
-      backLinkElement.innerText = backLinkText
+      backLinkElement.innerText = '< ' + backLinkText
 
       // Check whether to activate the links in the footer
       // (to prevent clicking away during the donation process)
