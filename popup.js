@@ -10,7 +10,7 @@ var pageDonationUnsuccessful = 'page-donation-unsuccessful'
 var pageFirstUse = 'page-first-use'
 var nanoCrawlerAccountURL = 'https://nanocrawler.cc/explorer/account/'
 var nanoCrawlerBlockURL = 'https://nanocrawler.cc/explorer/block/'
-var validNanoAddress = /^[+-]?((\.\d+)|(\d+(\.\d+)?))$/
+var validNanoAmount = /^[+-]?((\.\d+)|(\d+(\.\d+)?))$/
 var amountValid = false
 var raiMultiplier = 1000000
 var debug = true
@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
             nextDisallow()
           } else if (amount === 0) {
             nextDisallow()
-          } else if (!validNanoAddress.test(amount)) {
+          } else if (!validNanoAmount.test(amount)) {
             nextDisallow('Invalid amount')
           } else if (amount > maxAmount) {
             nextDisallow('Maximum donation is ' + maxAmount + ' Nano. Choose smaller amount.')
