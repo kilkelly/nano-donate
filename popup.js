@@ -13,6 +13,8 @@ var nanoCrawlerBlockURL = 'https://nanocrawler.cc/explorer/block/'
 var validNanoAddress = /^[+-]?((\.\d+)|(\d+(\.\d+)?))$/
 var amountValid = false
 var raiMultiplier = 1000000
+var debug = true
+// var debug = false
 
 // ---------------------------------------------------
 
@@ -30,8 +32,10 @@ document.addEventListener('DOMContentLoaded', function () {
   var donationsHistoryElement = $('donations-history')
   var donationSuccessfulDetailsElement = $('donation-successful-details')
   var brainblocksButton = $('brainblocks-button')
+  var paymentQRCodeElement = $('payment-qr-code')
   var paymentChoiceAmount = $('payment-choice-amount')
   var suggestionElements = document.getElementsByClassName('suggestion')
+  var debugElement = $('debug')
 
   chrome.storage.local.get({nanoAddressCache: {}}, function ({ nanoAddressCache }) {    
   // chrome.runtime.getBackgroundPage(function (background) {
@@ -70,22 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         historyLinkElement.onclick = historyLinkDonationSuccessfulElement.onclick = onHistoryLinkClicked
         backLinkElement.onclick = onBackLinkClicked
-        $('payment-choice-brainblocks').onclick = function () {
-          showPage(pageBrainblocks, {
-            footerActive: false,
-            historyActive: false,
-            githubActive: false,
-            backActive: true
-          })
-        }
-        $('payment-choice-qr-code').onclick = function () {
-          showPage(pageQRCode, {
-            footerActive: false,
-            historyActive: false,
-            githubActive: false,
-            backActive: true
-          }, 'Donate Again?')
-        }
+        $('payment-choice-brainblocks').onclick = paymentChoiceBrainblocksClicked
+        $('payment-choice-qr-code').onclick = paymentChoiceQRCodeClicked
 
 
         // Check if web page is enabled to accept Nano donations (if Nano address exists in meta tag)
@@ -96,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
             text: nanoAddress,
             width: 120,
             height: 120,
+            colorDark: '#444',
             correctLevel: QRCode.CorrectLevel.M
           })
           nanoDonationFormElement.onsubmit = onNanoDonationFormSubmit
@@ -110,24 +101,20 @@ document.addEventListener('DOMContentLoaded', function () {
           event.preventDefault()
           var nanoDonationAmountElementValue = parseFloat(nanoDonationAmountElement.value)
           var nanoDonationAmount = parseFloat((nanoDonationAmountElementValue * raiMultiplier).toFixed(0))
+          var nanoDonationAmountRaw = nanoDonationAmount + '000000000000000000000000'
           var token
+
+          // Display debug information
+          if (debug) {
+            debugElement.innerHTML = `
+            nanoDonationAmountElementValue = ${nanoDonationAmountElementValue}<br/>
+            nanoDonationAmount = ${nanoDonationAmount}<br/>
+            nanoDonationAmountRaw = ${nanoDonationAmountRaw}<br/>
+            `
+          }
 
           if (amountValid) {
             paymentChoiceAmount.innerText = nanoDonationAmountElementValue
-
-/*             showPage(pageBrainblocks, {
-              footerActive: false,
-              historyActive: false,
-              githubActive: false,
-              backActive: true
-            }) */
-
-            showPage(pagePaymentChoice, {
-              footerActive: false,
-              historyActive: false,
-              githubActive: false,
-              backActive: true
-            })
 
             // Render the Nano button
             brainblocks.Button.render({
@@ -216,6 +203,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
               }
             }, '#brainblocks-button')
+
+            // Refresh payment QR code
+            var paymentQRCode = new QRCode(paymentQRCodeElement, {
+              text: 'xrb:' + nanoAddress + '?amount=' + nanoDonationAmountRaw,
+              width: 120,
+              height: 120,
+              correctLevel: QRCode.CorrectLevel.M
+            })
+
+            // Show payment choice page
+            showPage(pagePaymentChoice, {
+              footerActive: false,
+              historyActive: false,
+              githubActive: false,
+              backActive: true
+            })            
           }
         }
 
@@ -283,12 +286,33 @@ document.addEventListener('DOMContentLoaded', function () {
           nextAllow()
         }
 
+        function paymentChoiceBrainblocksClicked () {
+          showPage(pageBrainblocks, {
+            footerActive: false,
+            historyActive: false,
+            githubActive: false,
+            backActive: true
+          })
+        }
+
+        // -----
+
+        function paymentChoiceQRCodeClicked () {
+          showPage(pageQRCode, {
+            footerActive: false,
+            historyActive: false,
+            githubActive: false,
+            backActive: true
+          }, 'Donate Again?')
+        }
+
         // -----
 
         function onBackLinkClicked (event) {
           if (nanoAddress) {
             nanoDonationAmountElement.value = ''
             brainblocksButton.innerHTML = ''
+            paymentQRCodeElement.innerHTML = ''
             nextDisallow()
             showPage(pageDonation, { backActive: false })
           } else {

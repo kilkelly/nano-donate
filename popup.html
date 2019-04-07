@@ -30,33 +30,40 @@
             <div class="suggestion" title="10">10</div>
           </div>
         </form>
-        <div id="address-wrapper">Donations will be sent to this address set by the website owner: <a id="address" href="#" target="_blank"></a></div>
+        <div id="address-wrapper">Donations will be sent to the address set by the website owner: <a id="address" href="#" target="_blank"></a></div>
         <div id="address-qr-code"></div>
       </div>
       <!----------------------------->
       <div id="page-payment-choice" class="page">
-        <h3>How would like to donate <img src="images/icon-nano.png" /> <span id="payment-choice-amount"></span>?</h3>
+        <h3>How would you like to donate <img src="images/icon-nano.png" /> <span id="payment-choice-amount"></span>?</h3>
         <div class="payment-choice">
-            <button id="payment-choice-brainblocks" class="payment-choice-button"/>Brainblocks Payment ></button>
+            <button id="payment-choice-brainblocks" class="payment-choice-button"/>Brainblocks payment ></button>
             <p class="payment-choice-description">Donations are saved to your Donation History ></p>
         </div>
         <div class="payment-choice" class="page">
-            <button id="payment-choice-qr-code" class="payment-choice-button"/>QR Code ></button>
+            <button id="payment-choice-qr-code" class="payment-choice-button"/>QR code payment ></button>
             <p class="payment-choice-description">Donations are <span style="font-weight: bold;">not</span> saved to your Donation History</p>
         </div>
       </div>
       <!----------------------------->
       <div id="page-brainblocks" class="page">
-        <p>Be sure to review the donation amount below before clicking the button. <!-- Double-check <a id="address-on-brainblocks-page" href="#" target="_blank"></a> afterwards to see that your donation was sent. --> Do not close this popup until the donation has finished processing.</p>
+        <h3>Brainblocks payment</h3>
+        <p>Be sure to review the donation amount below before clicking the button below. Do not close this popup until the donation has finished processing.</p>
         <div id="brainblocks-button"></div>
       </div>
       <!----------------------------->
       <div id="page-qr-code" class="page">
+          <h3>QR code payment</h3>
+          <p>Scan the following QR code with a compatible Nano wallet (<a href="https://natrium.io/" target="_blank">Natrium wallet</a> is recommended). Please review the amount in your wallet before sending.</p>
+          <div id="payment-qr-code"></div>
       </div>      
       <!----------------------------->
       <div id="page-nodonate" class="page">
-          <p>This web page is not enabled for Nano donations through <span style="font-weight: bold;">Nano Donate</span>. If you are the owner of this web page please <a href="https://nanocharts.info/nano-donate.html" target="_blank">follow this link</a> to learn how to enable donations.</p>
-          <p>If you are not the owner but still want to donate Nano try sending a kind email along with this <a href="https://nanocharts.info/nano-donate.html" target="_blank">link</a> to the website's owner through their contact page.</p>
+          <div style="display: flex;flex-direction: column;align-items: center;width: 100%">
+            <img src="images/nano-donate-inactive-128.png" width="64" height="64">
+            <p>This web page is not yet enabled for Nano donations through <span style="font-weight: bold;">Nano Donate</span>. If you are the owner of this web page please <a href="https://nanocharts.info/nano-donate.html" target="_blank">follow this link</a> to learn how to enable donations.</p>
+            <p>If you are not the owner but still want to donate Nano try sending a kind email along with this <a href="https://nanocharts.info/nano-donate.html" target="_blank">link</a> to the website's owner through their contact page.</p>
+          </div>  
       </div>
       <!----------------------------->
       <div id="page-history" class="page">
@@ -76,14 +83,18 @@
           <p>Payment unsuccessful.</p>
       </div>
       <!----------------------------->
-      <div id="page-first-use" class="page">
-          <h3>Thanks for installing Nano Donate!</h3>  
-          <p><span style="font-weight: bold;">Nano Donate</span> is the easiest way to make Nano currency donations to participating websites.</p>
-          <p>While every possible effort has been made to ensure <span style="font-weight: bold;">Nano Donate</span> works securely please make sure to double-check all outgoing amounts from your wallet when making a donation. Test with a tiny donation amount first if you want peace of mind. The author of this extension is not liable for any loss or damage arising directly through use of this extension.</p>
-          <button id="i-agree">I Agree</button>
+      <div id="page-first-use" class="page">          
+          <div style="display: flex;flex-direction: column;align-items: center;width: 100%">
+              <img src="images/nano-donate-active-128.png" width="64" height="64">
+              <h3>Thank you for installing Nano Donate!</h3>
+              <p><span style="font-weight: bold;">Nano Donate</span> is the easiest way to make Nano currency donations to participating websites.</p>
+              <p>While every possible effort has been made to ensure <span style="font-weight: bold;">Nano Donate</span> works securely please make sure to double-check all outgoing amounts from your wallet when making a donation. Test with a tiny donation amount first if you want peace of mind. The author of this extension is not liable for any loss or damage arising directly through use of this extension.</p>
+              <button id="i-agree">I Agree</button>
+          </div>  
       </div>      
       <!----------------------------->
     </div>
+    <div id="debug"></div>
     <footer>
         <div><span id="footer-link-nano-donate"></span> is brought to you by <span id="footer-link-nanocharts"></span> <!--By using this extension you agree that the author is not liable for any loss or damage arising directly through use of this extension.--></div>
         <div><span id="footer-link-github"></span></div>
