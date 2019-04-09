@@ -10,11 +10,12 @@ var pageDonationUnsuccessful = 'page-donation-unsuccessful'
 var pageFirstUse = 'page-first-use'
 var nanoCrawlerAccountURL = 'https://nanocrawler.cc/explorer/account/'
 var nanoCrawlerBlockURL = 'https://nanocrawler.cc/explorer/block/'
-var validNanoAmount = /^[+-]?((\.\d+)|(\d+(\.\d+)?))$/
+var validNanoAmount = /^[+]?((\d+)|(\.\d{1,6})|(\d+(\.\d{1,6})))$/
+// var validNanoAmount = /^[+]?((\.\d+)|(\d+(\.\d+)?))$/
 var amountValid = false
 var raiMultiplier = 1000000
-var debug = true
-// var debug = false
+// var debug = true
+var debug = false
 
 // ---------------------------------------------------
 
@@ -33,7 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
   var donationSuccessfulDetailsElement = $('donation-successful-details')
   var brainblocksButton = $('brainblocks-button')
   var paymentQRCodeElement = $('payment-qr-code')
-  var paymentChoiceAmount = $('payment-choice-amount')
+  var pagePaymentChoiceAmount = $('page-payment-choice-amount')
+  var pageBrainblocksAmount = $('page-brainblocks-amount')
+  var pageQRCodeAmount = $('page-qr-code-amount')
   var suggestionElements = document.getElementsByClassName('suggestion')
   var debugElement = $('debug')
 
@@ -82,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (nanoAddress) {
           $('website').innerText = url
           setNanoAddress($('address'))
+          setNanoAddress($('address-qr-code-page'))
           var addressQRCode = new QRCode($('address-qr-code'), {
             text: nanoAddress,
             width: 120,
@@ -106,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // Display debug information
           if (debug) {
-            debugElement.innerHTML = `
+            debugElement.innerHTML += `
             nanoDonationAmountElementValue = ${nanoDonationAmountElementValue}<br/>
             nanoDonationAmount = ${nanoDonationAmount}<br/>
             nanoDonationAmountRaw = ${nanoDonationAmountRaw}<br/>
@@ -114,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
           if (amountValid) {
-            paymentChoiceAmount.innerText = nanoDonationAmountElementValue
+            pagePaymentChoiceAmount.innerText = pageBrainblocksAmount.innerText = pageQRCodeAmount.innerText = nanoDonationAmountElementValue
 
             // Render the Nano button
             brainblocks.Button.render({
@@ -204,13 +208,22 @@ document.addEventListener('DOMContentLoaded', function () {
               }
             }, '#brainblocks-button')
 
+            var paymentQRCodeText = 'xrb:' + nanoAddress + '?amount=' + nanoDonationAmountRaw
+
             // Refresh payment QR code
             var paymentQRCode = new QRCode(paymentQRCodeElement, {
-              text: 'xrb:' + nanoAddress + '?amount=' + nanoDonationAmountRaw,
+              text: paymentQRCodeText,
               width: 120,
               height: 120,
               correctLevel: QRCode.CorrectLevel.M
             })
+
+            // Display debug information
+            if (debug) {
+              debugElement.innerHTML += `
+              paymentQRCodeText = ${paymentQRCodeText}<br/>
+              `
+            }
 
             // Show payment choice page
             showPage(pagePaymentChoice, {
@@ -236,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
           } else if (amount === 0) {
             nextDisallow()
           } else if (!validNanoAmount.test(amount)) {
-            nextDisallow('Invalid amount')
+            nextDisallow('Invalid amount. Must be a number in format XX.XXXXXX')
           } else if (amount > maxAmount) {
             nextDisallow('Maximum donation is ' + maxAmount + ' Nano. Choose smaller amount.')
           } else if (amount < minAmount) {
@@ -309,6 +322,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // -----
 
         function onBackLinkClicked (event) {
+          // CLear debug information
+          if (debug) {
+            debugElement.innerHTML = ''
+          }
+
           if (nanoAddress) {
             nanoDonationAmountElement.value = ''
             brainblocksButton.innerHTML = ''
