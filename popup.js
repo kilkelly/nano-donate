@@ -111,9 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
           // Display debug information
           if (debug) {
             debugElement.innerHTML += `
-            nanoDonationAmountElementValue = ${nanoDonationAmountElementValue}<br/>
-            nanoDonationAmount = ${nanoDonationAmount}<br/>
-            nanoDonationAmountRaw = ${nanoDonationAmountRaw}<br/>
+            Mnano = ${nanoDonationAmountElementValue}<br/>
+            nano = ${nanoDonationAmount}<br/>
+            raw = ${nanoDonationAmountRaw}<br/>
             `
           }
 
@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
 
             // If there are no donations insert default HTML
-            donationsHistoryHtml = donationsHistoryHtml || '<p>You have not made any donations yet.</p>'
+            donationsHistoryHtml = donationsHistoryHtml || '<p>Your donation history is empty.</p>'
 
             donationsHistoryElement.innerHTML = donationsHistoryHtml
             showPage(pageHistory, { historyActive: false }, 'Back')
