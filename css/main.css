@@ -4,6 +4,7 @@ body {
   font-family: "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;                
   font-size: 15px;
   min-width: 500px;
+  margin: 0rem;
 }
 
 a, a:visited {
@@ -16,13 +17,15 @@ a, a:visited {
 
 button {
   outline: none;
+  box-shadow: 0px 2px 0px #94b7dd;
 }
 
-#page-donation, #page-nodonate, #page-brainblocks, #page-payment-choice, #page-qr-code, #page-donation-successful, #page-donation-unsuccessful, #page-history, #page-first-use {
+.page {
   display: none;  
   background-color: #FFF;
-  padding: 0.5rem;
+  padding: 0.8rem;
   padding-bottom: 2rem;
+  margin-top: 0.3rem;
 }
 
 input {
@@ -32,30 +35,35 @@ input {
 }
 
 #nano-donation-amount {
-  width: 10rem;
+  width: 9rem;
 }
 
 #nano-donation-submit {
   cursor: pointer;
+  box-shadow: 0px 2px 0px #94b7dd;
 }
 
 #suggestions-wrapper {
   width: 100%;        
-  margin: 1rem;
+  margin-top: 0.8rem;
 }
 
 .suggestion {
   display: inline-block;
-  background-color: #4a90e2;
+  border: 1px solid #999;
   color: #FFF;
-  min-width: 5rem;
-  text-align: center;
+  min-width: 2rem;  
+  max-width: 2rem;  
   border-radius: 5px;
   cursor: pointer;
   margin: 0.3rem 0;
+  padding-left: 3rem;
+  box-shadow: 0px 2px 0px #94b7dd;
+  background: #4a90e2 url('/images/icon-nano-white.png') 14px 5px no-repeat 
 }
 
 #address-wrapper {
+  color: #666;
   margin: 1rem 0;
 }
 
@@ -67,12 +75,9 @@ input {
   color: #666;
 }
 
-#address {
-  font-weight: bold;
-}      
-
 #nano-amount-error {
   color: red;
+  margin: 0.3rem 0 0 1.6rem;
 }
 
 h4 {
@@ -85,6 +90,7 @@ header {
   flex-direction: row;
   align-content: center;
   margin: 0.2rem 0;
+  padding: 0.4rem;
 }
 
 header #title {
@@ -100,7 +106,7 @@ h3 {
 }     
 
 footer {
-  background-color: #666;
+  background-color: #4a90e2;
   color: #FFF;
   padding: 0.3rem;
   font-size: 0.8rem;
@@ -111,10 +117,10 @@ footer a, footer a:visited {
 }             
 
 #nano-donation-form {
-  background-color: #EEE;
-  margin: 1rem 0;
-  padding: 1rem 0.5rem;
-  
+  background-color: rgba(0,0,0,0.1);
+  margin: 1rem 0 2rem 0;
+  padding: 1.3rem 1rem;
+  border-radius: 5px;
 }
 
 #nano-donation-amount-success {
@@ -146,7 +152,8 @@ footer a, footer a:visited {
   padding: 0.2rem;
 }
 
-#address {
+#address, #address-qr-code-page {
+  font-weight: bold;
   font-family: monospace;
   word-wrap: break-word;
   font-size: 88%;
@@ -157,18 +164,34 @@ footer a, footer a:visited {
   margin-top: 1.5rem;
 }
 
-.payment-choice-button {
-  font-size: 130%;
-  padding: 1rem;
+.payment-choice-button, #nano-donation-submit, #i-agree {
   background-color: #4a90e2;
-  color: #FFF;
   cursor: pointer;
   border: 0;
   border-radius: 5px;
+  color: #FFF;
+}
+
+.payment-choice-button, #i-agree {
+  padding: 0.5rem;
+  font-size: 130%;
+}
+
+#nano-donation-submit {
+  padding: 0.3rem;
+}
+
+#nano-donation-submit:disabled {
+  background-color: #94b7dd;
+  color: #FFF;
 }
 
 .payment-choice-description {
+  color: #666;
   font-size: 80%;
   margin-top: 0.2rem;
 }
 
+#payment-qr-code {
+  margin-top: 1rem;
+}
