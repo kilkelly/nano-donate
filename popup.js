@@ -1,4 +1,4 @@
-var version = 'v1.0.2'
+var version = 'v1.1.0'
 var pageDonation = 'page-donation'
 var pageNoDonate = 'page-nodonate'
 var pagePaymentChoice = 'page-payment-choice'
