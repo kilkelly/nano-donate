@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
               }
             }, '#brainblocks-button')
 
-            var paymentQRCodeText = 'xrb:' + nanoAddress + '?amount=' + nanoDonationAmountRaw
+            var paymentQRCodeText = 'nano:' + nanoAddress + '?amount=' + nanoDonationAmountRaw
 
             // Refresh payment QR code
             var paymentQRCode = new QRCode(paymentQRCodeElement, {
