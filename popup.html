@@ -10,13 +10,27 @@
     <header>
       <img src="images/nano-donate-active-128.png" width="20"  height="20">
       <div id="title">Nano Donate</div>
-      <div id="back-link">Home</div>
-      <div id="history-link">Donation History</div>
+      <div class="link" id="back-link">< Back</Back></div>
+      <div class="link" id="history-link">Donation History ></div>
     </header>    
     <div id="wrapper">
       <!----------------------------->
+      <div id="page-address-choice" class="page">
+          <h3>Who would you like to donate Nano to?</h3>
+          <div id="address-choices">
+
+          </div>
+        </div>      
+      <!----------------------------->
       <div id="page-donation" class="page">
-        <h3>Donate to web page</h3>
+        <div id="nano-donate-entry">
+            <h3 id="nano-donate-entry-title"></h3>
+            <div id="nano-donate-avatar-owner-role">
+              <div id="nano-donate-entry-image"></div>
+              <div id="nano-donate-entry-address-owner"></div>
+              <div id="nano-donate-entry-role"></div>
+            </div>
+        </div>
         <div id="website-wrapper"><div id="website"></div></div>
         <form id="nano-donation-form">
           <span style="font-weight: bold;"><img src="images/icon-nano.png" /></span>
@@ -30,34 +44,36 @@
             <div class="suggestion" title="10">10</div>
           </div>
         </form>
-        <div id="address-wrapper">Donations will be sent to the address set by the website owner: <a id="address" href="#" target="_blank"></a></div>
+        <div id="address-wrapper">Donations will be sent to the following address: <a id="address" href="#" target="_blank"></a></div>
         <div id="address-qr-code"></div>
+        <div id="asterisk-text"><sup>*</sup> Text supplied by the website owner, not Nano Donate</div>        
       </div>
       <!----------------------------->
       <div id="page-payment-choice" class="page">
-        <h3>How would you like to donate <img src="images/icon-nano.png" /> <span id="page-payment-choice-amount"></span>?</h3>
-        <div class="payment-choice">
-            <button id="payment-choice-brainblocks" class="payment-choice-button"/>Brainblocks payment ></button>
-            <p class="payment-choice-description">Donations are saved to your Donation History</p>
-        </div>
-        <div class="payment-choice" class="page">
-            <button id="payment-choice-qr-code" class="payment-choice-button"/>QR code payment ></button>
-            <p class="payment-choice-description">Faster method of payment. Donations are <span style="font-weight: bold;">not</span> saved to your Donation History.</p>
+        <h3>How would you like to donate <img src="images/icon-nano.png" /> <span id="page-payment-choice-amount"></span><span id="page-payment-choice-account-owner"></span>?</h3>
+        <div id="payment-choices">
+          <button id="payment-choice-brainblocks" class="payment-choice-button"/>BrainBlocks payment</button>
+          <div class="payment-choice-description">Donations are saved to your Donation History</div>
+
+          <button id="payment-choice-qr-code" class="payment-choice-button"/>
+            <img src="images/icon-qr-code.png" style="width: 15px" />
+            <span>QR code payment</span>            
+          </button>
+          <div class="payment-choice-description">Faster method of payment. Donations are <span style="font-weight: bold;">not</span> saved to your Donation History.</div>
         </div>
       </div>
       <!----------------------------->
       <div id="page-brainblocks" class="page">
-        <h3>Brainblocks payment for <img src="images/icon-nano.png" /> <span id="page-brainblocks-amount"></span></h3>
+        <h3>BrainBlocks payment for <img src="images/icon-nano.png" /> <span id="page-brainblocks-amount"></span><span id="page-brainblocks-account-owner"></span></h3>
         <p>Be sure to review the donation amount below before clicking the button below. Do not close this popup until the donation has finished processing.</p>
         <div id="brainblocks-button"></div>
       </div>
       <!----------------------------->
       <div id="page-qr-code" class="page">
-          <h3>QR code payment for <img src="images/icon-nano.png" /> <span id="page-qr-code-amount"></span></h3>
-          <p>Scan the following QR code with a compatible Nano wallet (<a href="https://natrium.io/" target="_blank">Natrium wallet</a> is recommended). Please review the amount in your wallet before sending.</p>
-          <div id="payment-qr-code"></div>
-          <p>Shortly after sending view your donation's arrival at the link below. <a id="address-qr-code-page" href="#" target="_blank"></a>
-          </p>
+        <h3>QR code payment for <img src="images/icon-nano.png" /> <span id="page-qr-code-amount"></span><span id="page-qr-code-account-owner"></span></h3>
+        <p>Scan the following QR code with a compatible Nano wallet (<a href="https://natrium.io/" target="_blank">Natrium wallet</a> is recommended). Please review the amount in your wallet before sending.</p>
+        <div id="payment-qr-code"></div>
+        <p>Shortly after sending view your donation's arrival at the link below. <a id="address-qr-code-page" href="#" target="_blank"></a></p>
       </div>      
       <!----------------------------->
       <div id="page-nodonate" class="page">
@@ -80,6 +96,7 @@ Thanks!
       <div id="page-history" class="page">
           <h3>Donation History</h3>
           <div id="donations-history"></div>
+          <br style="clear: both" />
       </div>      
       <!----------------------------->
       <div id="page-donation-successful" class="page">
@@ -112,5 +129,6 @@ Thanks!
     </footer>    
     <script src="popup.js"></script>
     <script src="third-party/qrcode.js"></script>
+    <script src="third-party/xss.js"></script>
   </body>
 </html>
