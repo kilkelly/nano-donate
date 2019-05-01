@@ -1,14 +1,5 @@
 var version = 'v1.2.0'
-var pageAddressChoice = 'page-address-choice'
-var pageDonation = 'page-donation'
-var pageNoDonate = 'page-nodonate'
-var pagePaymentChoice = 'page-payment-choice'
-var pageBrainblocks = 'page-brainblocks'
-var pageQRCode = 'page-qr-code'
-var pageHistory = 'page-history'
-var pageDonationSuccessful = 'page-donation-successful'
-var pageDonationUnsuccessful = 'page-donation-unsuccessful'
-var pageFirstUse = 'page-first-use'
+
 var nanoCrawlerAccountURL = 'https://nanocrawler.cc/explorer/account/'
 var nanoCrawlerBlockURL = 'https://nanocrawler.cc/explorer/block/'
 var validNanoAmount = /^[+]?((\d+)|(\.\d{1,6})|(\d+(\.\d{1,6})))$/
@@ -16,9 +7,20 @@ var validNanoAmount = /^[+]?((\d+)|(\.\d{1,6})|(\d+(\.\d{1,6})))$/
 var amountValid = false
 const raiMultiplier = 1000000
 const AVATAR_FILE_LOCATION = 'images/nano-donate-avatar.png'
+const SUP_HTML = '<sup title="This text was supplied by the website owner, not Nano Donate"> *</sup>'
 // var debug = true
 var debug = false
 
+var pageAddressChoiceElement = $('page-address-choice')
+var pageDonationElement = $('page-donation')
+var pageNoDonateElement = $('page-nodonate')
+var pagePaymentChoiceElement = $('page-payment-choice')
+var pageBrainblocksElement = $('page-brainblocks')
+var pageQRCodeElement = $('page-qr-code')
+var pageHistoryElement = $('page-history')
+var pageDonationSuccessfulElement = $('page-donation-successful')
+var pageDonationUnsuccessfulElement = $('page-donation-unsuccessful')
+var pageFirstUseElement = $('page-first-use')
 var addressElement = $('address')
 var addressQRCodeElement = $('address-qr-code')
 var addressQRCodePageElement = $('address-qr-code-page')
@@ -26,25 +28,24 @@ var nanoDonationFormElement = $('nano-donation-form')
 var nanoDonationAmountElement = $('nano-donation-amount')
 var nanoAmountErrorElement = $('nano-amount-error')
 var nanoDonationSubmitElement = $('nano-donation-submit')
-var footerLinkNanocharts = $('footer-link-nanocharts')
-var footerLinkNanoDonate = $('footer-link-nano-donate')
-var footerLinkGithub = $('footer-link-github')
+var footerLinkNanochartsElement = $('footer-link-nanocharts')
+var footerLinkNanoDonateElement = $('footer-link-nano-donate')
+var footerLinkGithubElement = $('footer-link-github')
 var backLinkElement = $('back-link')
 var historyLinkElement = $('history-link')
 var historyLinkDonationSuccessfulElement = $('history-link-donation-successful')
 var donationsHistoryElement = $('donations-history')
 var donationSuccessfulDetailsElement = $('donation-successful-details')
-var brainblocksButton = $('brainblocks-button')
+var brainblocksButtonElement = $('brainblocks-button')
 var paymentQRCodeElement = $('payment-qr-code')
 var pagePaymentChoiceAmountElement = $('page-payment-choice-amount')
 var pagePaymentChoiceAccountOwnerElement = $('page-payment-choice-account-owner')
 var pageBrainblocksAccountOwnerElement = $('page-brainblocks-account-owner')
 var pageQRCodeAccountOwnerElement = $('page-qr-code-account-owner')
-var pageBrainblocksAmount = $('page-brainblocks-amount')
+var pageBrainblocksAmountElement = $('page-brainblocks-amount')
 var pageQRCodeAmount = $('page-qr-code-amount')
 var suggestionElements = document.getElementsByClassName('suggestion')
 var addressChoicesElement = $('address-choices')
-var nanoDonateEntryElement = $('nano-donate-entry')
 var nanoDonateEntryTitleElement = $('nano-donate-entry-title')
 var nanoDonateEntryImageElement = $('nano-donate-entry-image')
 var nanoDonateEntryAddressOwnerElement = $('nano-donate-entry-address-owner')
@@ -60,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Check whether user has agreed to first use message
     chrome.storage.local.get({agree: false}, function ({ agree }) {
       if (!agree) {
-        showPage(pageFirstUse, {
+        showPage(pageFirstUseElement, {
           historyActive: false,
           backActive: false
         })
@@ -88,8 +89,11 @@ document.addEventListener('DOMContentLoaded', function () {
         $('website').innerText = url
 
         nanoDonateEntries.map(function (nanoDonateEntry_) {
-          // Perform XSS prevention on image URL as it is being hotlinked from an external location
+          // Perform XSS prevention on all website supplied values (except address as it has to be valid already to get to this point)
+          nanoDonateEntry_.addressOwner = filterXSS(nanoDonateEntry_.addressOwner)
           nanoDonateEntry_.image = filterXSS(nanoDonateEntry_.image)
+          nanoDonateEntry_.role = filterXSS(nanoDonateEntry_.role)
+          nanoDonateEntry_.title = filterXSS(nanoDonateEntry_.title)
 
           let role = nanoDonateEntry_.role ? ' (' + nanoDonateEntry_.role + ')' : ''
           let image = nanoDonateEntry_.metaTag
@@ -99,9 +103,10 @@ document.addEventListener('DOMContentLoaded', function () {
           let addressChoiceElement = document.createElement('button')
           addressChoiceElement.innerHTML = `<img src="${image}" style="width:25px" /> <span>${nanoDonateEntry_.addressOwner + role}</span>`
           addressChoiceElement.onclick = function () {
+            // Set chosen Nano Donate entry to be the one used throughout the entire app flow
             nanoDonateEntry = nanoDonateEntry_
-            addressSetup()
-            showPage(pageDonation, { backActive: !!nanoDonateEntries.length })
+            nanoDonateEntrySetup()
+            showPage(pageDonationElement, { backActive: !!nanoDonateEntries.length })
           }
           addressChoicesElement.appendChild(addressChoiceElement)
         })
@@ -118,24 +123,23 @@ document.addEventListener('DOMContentLoaded', function () {
         $('payment-choice-qr-code').onclick = paymentChoiceQRCodeClicked
         nanoDonationFormElement.onsubmit = onNanoDonationFormSubmit
 
-        // Check if web page is enabled to accept Nano donations (if Nano address exists in meta tag)
+        // Show Nano Donate entry choices
         if (nanoDonateEntries.length > 1) {
-          showPage(pageAddressChoice, { backActive: false })
-        } else if (nanoDonateEntries.length === 1) {
+          showPage(pageAddressChoiceElement, { backActive: false })
+        } else if (nanoDonateEntries.length === 1) { // Process the sole Nano Donate entry
           nanoDonateEntry = nanoDonateEntries[0]
-          addressSetup()
-          showPage(pageDonation, { backActive: false })
-        } else {
-          showPage(pageNoDonate, { backActive: false })
+          nanoDonateEntrySetup()
+          showPage(pageDonationElement, { backActive: false })
+        } else { // There are no Nano Donate entries
+          showPage(pageNoDonateElement, { backActive: false })
         }
 
         // -----
 
-        function addressSetup () {
+        function nanoDonateEntrySetup () {
           setNanoAddress(addressElement, nanoDonateEntry.address)
           setNanoAddress(addressQRCodePageElement, nanoDonateEntry.address)
           addressQRCodeElement.innerHTML = ''
-          const SUP_HTML = '<sup title="This text was supplied by the website owner, not Nano Donate"> *</sup>'
 
           var addressQRCode = new QRCode(addressQRCodeElement, {
             text: nanoDonateEntry.address,
@@ -147,9 +151,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
           if (nanoDonateEntry.metaTag) {
             nanoDonateEntryTitleElement.innerText = 'Donate to this web page'
-            websiteWrapper.style.display = 'block'
+            show(websiteWrapper)
             nanoDonateEntryImageElement.innerHTML = nanoDonateEntryAddressOwnerElement.innerText = nanoDonateEntryRoleElement.innerText = ''
-            asteriskText.style.display = 'none'
+            hide(asteriskText)
           } else {
             if (nanoDonateEntry.title) {
               nanoDonateEntryTitleElement.innerHTML = nanoDonateEntry.title + SUP_HTML
@@ -166,8 +170,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             nanoDonateEntryImageElement.innerHTML = `<img src="${nanoDonateEntry.image ? nanoDonateEntry.image : AVATAR_FILE_LOCATION}" style="width: 75px" />`
 
-            websiteWrapper.style.display = 'none'
-            asteriskText.style.display = 'block'
+            hide(websiteWrapper)
+            show(asteriskText)
           }
         }
 
@@ -190,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
           if (amountValid) {
-            pagePaymentChoiceAmountElement.innerText = pageBrainblocksAmount.innerText = pageQRCodeAmount.innerText = nanoDonationAmountElementValue
+            pagePaymentChoiceAmountElement.innerText = pageBrainblocksAmountElement.innerText = pageQRCodeAmount.innerText = nanoDonationAmountElementValue
 
             pagePaymentChoiceAccountOwnerElement.innerText =
               pageBrainblocksAccountOwnerElement.innerText =
@@ -250,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
                       ${/* buildDonationRow('BrainBlocks Token', latestDonation.brainblocks_token) */''}
                     </div>`
 
-                    showPage(pageDonationSuccessful, {}, 'Donate Again?')
+                    showPage(pageDonationSuccessfulElement, {}, 'Donate Again?')
 
                     // Save donation to local storage, along with previous donations
                     chrome.storage.local.get({history: []}, function ({ history }) {
@@ -261,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   }
                 })
                 .catch(function (error) {
-                  showPage(pageDonationUnsuccessful)
+                  showPage(pageDonationUnsuccessfulElement)
                   console.log(error)
                 })
               }
@@ -285,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Show payment choice page
-            showPage(pagePaymentChoice, {
+            showPage(pagePaymentChoiceElement, {
               footerActive: false,
               historyActive: false,
               githubActive: false,
@@ -340,7 +344,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Shorten Nano address for display purposes
         function shortenNanoAddress (nanoAddress) {
-          // return nanoAddress
           return nanoAddress.substring(0, 10) + '...' + nanoAddress.substring(58, (nanoAddress.startsWith('nano_') ? 65 : 64))
         }
 
@@ -378,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function paymentChoiceBrainblocksClicked () {
-          showPage(pageBrainblocks, {
+          showPage(pageBrainblocksElement, {
             footerActive: false,
             historyActive: false,
             githubActive: false,
@@ -389,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // -----
 
         function paymentChoiceQRCodeClicked () {
-          showPage(pageQRCode, {
+          showPage(pageQRCodeElement, {
             footerActive: false,
             historyActive: false,
             githubActive: false,
@@ -407,16 +410,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
           if (nanoDonateEntries.length) {
             nanoDonationAmountElement.value = ''
-            brainblocksButton.innerHTML = ''
+            brainblocksButtonElement.innerHTML = ''
             paymentQRCodeElement.innerHTML = ''
             nextDisallow()
             if (nanoDonateEntries.length > 1) {
-              showPage(pageAddressChoice, { backActive: false })
+              showPage(pageAddressChoiceElement, { backActive: false })
             } else {
-              showPage(pageDonation, { backActive: false })
+              showPage(pageDonationElement, { backActive: false })
             }
           } else {
-            showPage(pageNoDonate, { backActive: false })
+            showPage(pageNoDonateElement, { backActive: false })
           }
         }
 
@@ -455,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function () {
             donationsHistoryHtml = donationsHistoryHtml || '<p>Your donation history is empty.</p>'            
             donationsHistoryElement.innerHTML = donationsHistoryHtml
             console.log(donationsHistoryElement.innerHTML)
-            showPage(pageHistory, { historyActive: false }, 'Back')
+            showPage(pageHistoryElement, { historyActive: false }, 'Back')
           })
         }
       })
@@ -474,17 +477,17 @@ document.addEventListener('DOMContentLoaded', function () {
       githubActive: true,
       backActive: true
     }, backLinkText = 'Start Over') {
-      $(pageAddressChoice).style.display = 'none'
-      $(pagePaymentChoice).style.display = 'none'
-      $(pageBrainblocks).style.display = 'none'
-      $(pageQRCode).style.display = 'none'
-      $(pageNoDonate).style.display = 'none'
-      $(pageDonation).style.display = 'none'
-      $(pageHistory).style.display = 'none'
-      $(pageDonationSuccessful).style.display = 'none'
-      $(pageDonationUnsuccessful).style.display = 'none'
-      $(pageFirstUse).style.display = 'none'
-      $(page).style.display = 'block'
+      hide(pageAddressChoiceElement)
+      hide(pagePaymentChoiceElement)
+      hide(pageBrainblocksElement)
+      hide(pageQRCodeElement)
+      hide(pageNoDonateElement)
+      hide(pageDonationElement)
+      hide(pageHistoryElement)
+      hide(pageDonationSuccessfulElement)
+      hide(pageDonationUnsuccessfulElement)
+      hide(pageFirstUseElement)
+      show(page)
 
       // Set the centextual text for the back link
       backLinkElement.innerText = '< ' + backLinkText
@@ -492,34 +495,34 @@ document.addEventListener('DOMContentLoaded', function () {
       // Check whether to activate the links in the footer
       // (to prevent clicking away during the donation process)
       if (footerActive) {
-        footerLinkNanocharts.innerHTML = '<a href="https://nanocharts.info/" target="_blank">Nano Charts</a>'
-        footerLinkNanoDonate.innerHTML = '<a href="https://nanocharts.info/nano-donate.html" target="_blank">Nano Donate (' + version + ')</a>'
+        footerLinkNanochartsElement.innerHTML = '<a href="https://nanocharts.info/" target="_blank">Nano Charts</a>'
+        footerLinkNanoDonateElement.innerHTML = '<a href="https://nanocharts.info/nano-donate.html" target="_blank">Nano Donate (' + version + ')</a>'
       } else {
-        footerLinkNanocharts.innerHTML = 'Nano Charts'
-        footerLinkNanoDonate.innerHTML = 'Nano Donate (' + version + ')'
+        footerLinkNanochartsElement.innerHTML = 'Nano Charts'
+        footerLinkNanoDonateElement.innerHTML = 'Nano Donate (' + version + ')'
       }
 
       // Check whether to activate the link to Donation History in the header
       // (to prevent clicking away during the donation process)
       if (historyActive) {
-        historyLinkElement.style.display = 'block'
+        show(historyLinkElement)
       } else {
-        historyLinkElement.style.display = 'none'
+        hide(historyLinkElement)
       }
 
       // Check whether to activate the Back link in the header
       if (backActive) {
-        backLinkElement.style.display = 'block'
+        show(backLinkElement)
       } else {
-        backLinkElement.style.display = 'none'
+        hide(backLinkElement)
       }
 
       // Check whether to activate the link to GitHub in the footer
       // (to prevent clicking away during the donation process)
       if (githubActive) {
-        footerLinkGithub.innerHTML = '<a href="https://github.com/kilkelly/nano-donate" target="_blank">Source Code on GitHub</a>'
+        footerLinkGithubElement.innerHTML = '<a href="https://github.com/kilkelly/nano-donate" target="_blank">Source Code on GitHub</a>'
       } else {
-        footerLinkGithub.innerHTML = ''
+        footerLinkGithubElement.innerHTML = ''
       }
     }
 
@@ -531,4 +534,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function $ (name) {
   return document.getElementById(name)
+}
+
+function show (element) {
+  element.style.display = 'block'
+}
+
+function hide (element) {
+  element.style.display = 'none'
 }
