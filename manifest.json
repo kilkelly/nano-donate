@@ -1,7 +1,7 @@
 {
   "name": "Nano Donate",
   "version": "1.2.0",
-  "description": "Make Nano donations to your favorite websites.",
+  "description": "Nano donations made easy!",
   "permissions": [
     "storage"
   ],
