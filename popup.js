@@ -457,7 +457,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // If there are no donations insert default HTML
             donationsHistoryHtml = donationsHistoryHtml || '<p>Your donation history is empty.</p>'            
             donationsHistoryElement.innerHTML = donationsHistoryHtml
-            console.log(donationsHistoryElement.innerHTML)
             showPage(pageHistoryElement, { historyActive: false }, 'Back')
           })
         }
