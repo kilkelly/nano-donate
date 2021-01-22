@@ -1,4 +1,4 @@
-var version = 'v1.2.0'
+var version = 'v1.3.0'
 
 var nanoCrawlerAccountURL = 'https://nanocrawler.cc/explorer/account/'
 var nanoCrawlerBlockURL = 'https://nanocrawler.cc/explorer/block/'
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
         Array.from(suggestionElements).forEach(function (suggestionElement) {
           suggestionElement.onclick = onSuggestionClicked
         })
-        historyLinkElement.onclick = historyLinkDonationSuccessfulElement.onclick = onHistoryLinkClicked
+        // historyLinkElement.onclick = historyLinkDonationSuccessfulElement.onclick = onHistoryLinkClicked
         backLinkElement.onclick = onBackLinkClicked
         $('payment-choice-brainblocks').onclick = paymentChoiceBrainblocksClicked
         $('payment-choice-qr-code').onclick = paymentChoiceQRCodeClicked
@@ -203,76 +203,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 ? ' to this web page'
                 : nanoDonateEntry.addressOwner ? ' to ' + nanoDonateEntry.addressOwner : ''
 
-            // Render the Nano button
-            brainblocks.Button.render({
-              // Pass in payment options
-              payment: {
-                currency: 'rai',
-                amount: nanoDonationAmount,
-                destination: nanoDonateEntry.address
-              },
-              // Handle successful payments
-              onPayment: function (data) {
-                token = data.token
-
-                fetch('https://api.brainblocks.io/api/session/' + token + '/verify', {
-                  method: 'get'
-                })
-                .then(function (response) {
-                  return response.json()
-                })
-                .then(function (data) {
-                  // Check whether Brainblocks response matches our existing values
-                  if (
-                    nanoDonationAmount === data.amount_rai &&
-                    nanoDonateEntry.address === data.destination &&
-                    token === data.token
-                  ) {
-                    // Build up latest donation
-                    var latestDonation = {
-                      timestamp: Date.now(),
-                      amount: nanoDonationAmountElementValue,
-                      url: url,
-                      addressOwner: nanoDonateEntry.addressOwner, // may not exist
-                      role: nanoDonateEntry.role, // may not exist
-                      sender: data.sender,
-                      destination: data.destination,
-                      send_block: data.send_block,
-                      brainblocks_token: data.token
-                    }
-
-                    $('nano-donation-amount-success').innerText = '⋰·⋰ ' + nanoDonationAmountElementValue                                        
-
-                    donationSuccessfulDetailsElement.innerHTML= `<div id="donation">
-                      ${buildDonationRow('Date', new Date(latestDonation.timestamp).toLocaleString())}
-                      ${buildDonationRow('Amount Donated', `⋰·⋰ ${latestDonation.amount}`)}
-                      ${buildDonationRow('Website URL', `<a href="${latestDonation.url}" target="_blank">${latestDonation.url}</a>`)}
-                      ${buildDonationRow('Donated to', latestDonation.addressOwner + (latestDonation.role ? ' (' + latestDonation.role + ')' : ''))}
-                      ${buildDonationRow('Sender Address', `<a href="${nanoCrawlerAccountURL + latestDonation.sender}" title="${latestDonation.sender}" target="_blank">${shortenNanoAddress(latestDonation.sender)}</a>`)}
-                      ${buildDonationRow('Destination Address', `<a href="${nanoCrawlerAccountURL + latestDonation.destination}" title="${latestDonation.destination}" target="_blank">${shortenNanoAddress(latestDonation.destination)}</a>`)}
-                      ${buildDonationRow('Send Block', `<a href="${nanoCrawlerBlockURL + latestDonation.send_block}" title="${latestDonation.send_block}" target="_blank">${shortenBlockHash(latestDonation.send_block)}</a>`)}
-                      ${/* buildDonationRow('BrainBlocks Token', latestDonation.brainblocks_token) */''}
-                    </div>`
-
-                    showPage(pageDonationSuccessfulElement, {}, 'Donate Again?')
-
-                    // Save donation to local storage, along with previous donations
-                    chrome.storage.local.get({history: []}, function ({ history }) {
-                      chrome.storage.local.set({history: [latestDonation, ...history]})
-                    })
-                  } else {
-                    throw new Error('Payment error')
-                  }
-                })
-                .catch(function (error) {
-                  showPage(pageDonationUnsuccessfulElement)
-                  console.log(error)
-                })
-              }
-            }, '#brainblocks-button')
-
             var paymentQRCodeText = 'nano:' + nanoDonateEntry.address + '?amount=' + nanoDonationAmountRaw
-
+            
             // Refresh payment QR code
             var paymentQRCode = new QRCode(paymentQRCodeElement, {
               text: paymentQRCodeText,
@@ -288,13 +220,12 @@ document.addEventListener('DOMContentLoaded', function () {
               `
             }
 
-            // Show payment choice page
-            showPage(pagePaymentChoiceElement, {
+            showPage(pageQRCodeElement, {
               footerActive: false,
               historyActive: false,
               githubActive: false,
               backActive: true
-            })
+            }, 'Donate Again?')            
           }
         }
 
@@ -377,7 +308,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function onSuggestionClicked (event) {
           nanoDonationAmountElement.value = event.target.title
+          showPage(pageQRCodeElement, {
+            footerActive: false,
+            historyActive: false,
+            githubActive: false,
+            backActive: true
+          }, 'Donate Again?')          
           nextAllow()
+          onNanoDonationFormSubmit(event)
         }
 
         function paymentChoiceBrainblocksClicked () {
@@ -503,11 +441,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Check whether to activate the link to Donation History in the header
       // (to prevent clicking away during the donation process)
-      if (historyActive) {
-        show(historyLinkElement)
-      } else {
-        hide(historyLinkElement)
-      }
+      // if (historyActive) {
+      //   show(historyLinkElement)
+      // } else {
+      //   hide(historyLinkElement)
+      // }
 
       // Check whether to activate the Back link in the header
       if (backActive) {
