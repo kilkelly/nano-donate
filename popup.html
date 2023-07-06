@@ -43,7 +43,7 @@
             <div class="suggestion" title="10">10</div>
           </div>
         </form>
-        <div id="address-wrapper">Donations will be sent to the following address: <a id="address" href="#" target="_blank"></a></div>
+        <div id="address-wrapper">Donations will be sent to the following address: <a id="address" href="#" target="_blank" rel="noopener"></a></div>
         <div id="address-qr-code"></div>
         <div id="asterisk-text"><sup>*</sup> Text supplied by the website owner, not Nano Donate</div>        
       </div>
@@ -51,7 +51,6 @@
       <div id="page-payment-choice" class="page">
         <h3>How would you like to donate <img src="images/icon-nano.png" /> <span id="page-payment-choice-amount"></span><span id="page-payment-choice-account-owner"></span>?</h3>
         <div id="payment-choices">
-          <button id="payment-choice-brainblocks" class="payment-choice-button"/>BrainBlocks payment</button>
           <div class="payment-choice-description">Donations are saved to your Donation History</div>
 
           <button id="payment-choice-qr-code" class="payment-choice-button"/>
@@ -62,24 +61,19 @@
         </div>
       </div>
       <!----------------------------->
-      <div id="page-brainblocks" class="page">
-        <h3>BrainBlocks payment for <img src="images/icon-nano.png" /> <span id="page-brainblocks-amount"></span><span id="page-brainblocks-account-owner"></span></h3>
-        <p>Be sure to review the donation amount below before clicking the button below. Do not close this popup until the donation has finished processing.</p>
-        <div id="brainblocks-button"></div>
-      </div>
-      <!----------------------------->
       <div id="page-qr-code" class="page">
         <h3>QR code payment for <img src="images/icon-nano.png" /> <span id="page-qr-code-amount"></span><span id="page-qr-code-account-owner"></span></h3>
-        <p>Scan the following QR code with a compatible Nano wallet (<a href="https://natrium.io/" target="_blank">Natrium wallet</a> is recommended). Please review the amount in your wallet before sending.</p>
+        <p>Scan the following QR code with a <a href="https://hub.nano.org/wallets" target="_blank" rel="noopener">Nano wallet</a>. Please review the amount in your wallet before sending.</p>
         <div id="payment-qr-code"></div>
-        <p>Shortly after sending view your donation's arrival at the link below. <a id="address-qr-code-page" href="#" target="_blank"></a></p>
+        <p>Shortly after sending, view your donation's arrival at the link below. <a id="address-qr-code-page" href="#" target="_blank" rel="noopener"></a></p>
+        <p>Nano Donate cannot provide notification of successful donations.</p>
       </div>      
       <!----------------------------->
       <div id="page-nodonate" class="page">
           <div style="display: flex;flex-direction: column;align-items: center;width: 100%">
-            <img src="images/nano-donate-inactive-128.png" width="64" height="64">
-            <p>This web page is not yet enabled for donations through <span style="font-weight: bold;">Nano Donate</span>. If you are the owner of this web page please <a href="https://nanocharts.info/nano-donate.html" target="_blank">follow this link</a> to learn how to enable donations.</p>
-            <p>If you are not the owner but still want to donate Nano try sending a kind email along with this <a href="https://nanocharts.info/nano-donate.html" target="_blank">link</a> to the website's owner through their contact page. You could use the following email template as a starting point:</p>
+            <img src="images/nano-donate-inactive-128.png" width="90" height="90">
+            <p>This web page is not yet enabled for donations through <span style="font-weight: bold;">Nano Donate</span>. If you are the owner of this web page please <a href="https://nanocharts.info/nano-donate.html" target="_blank" rel="noopener">follow this link</a> to learn how to enable donations.</p>
+            <p>If you are not the owner but still want to donate Nano try sending a kind email along with this <a href="https://nanocharts.info/nano-donate.html" target="_blank" rel="noopener">link</a> to the website's owner through their contact page. You could use the following email template as a starting point:</p>
 <textarea rows="12" cols="57">
 Hi [SITE_OWNER],
 
