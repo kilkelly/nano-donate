@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener(function ({ nanoDonateEntries }, { tab }, s
           nanoDonateEntries
         }
         chrome.storage.local.set({ nanoAddressCache })
-        chrome.browserAction.setIcon({
+        chrome.action.setIcon({
           path: 'images/nano-donate-active-128.png',
           tabId: tab.id
         })
@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener(function ({ nanoDonateEntries }, { tab }, s
       } else {
         delete nanoAddressCache[tab.id]
         chrome.storage.local.set({ nanoAddressCache })
-        chrome.browserAction.setIcon({
+        chrome.action.setIcon({
           path: 'images/nano-donate-inactive-128.png',
           tabId: tab.id
         })
