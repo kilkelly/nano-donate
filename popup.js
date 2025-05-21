@@ -226,9 +226,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function nanoDonationAmountChanged (event) {
           var amount = event.target.value.trim()
-          var maxAmount = 99
+          var maxAmount = 1000
           var minAmount = 0.0001
-          var warnAmount = 50
+          var warnAmount = 100
 
           // Handle 'Next' button status and possible error text for entered Nano amount
           if (amount === '') {
