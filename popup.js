@@ -1,7 +1,7 @@
-var version = 'v1.4.0'
+var version = 'v1.5.0'
 
-var nanoLookerAccountURL = 'https://nanolooker.com/account/'
-var nanoLookerBlockURL = 'https://nanolooker.com/block/'
+var nanoLookerAccountURL = 'https://blocklattice.io/account/'
+var nanoLookerBlockURL = 'https://blocklattice.io/block/'
 var validNanoAmount = /^[+]?((\d+)|(\.\d{1,6})|(\d+(\.\d{1,6})))$/
 // var validNanoAmount = /^[+]?((\.\d+)|(\d+(\.\d+)?))$/
 var amountValid = false
